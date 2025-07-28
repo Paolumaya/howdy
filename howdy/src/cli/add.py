@@ -166,12 +166,13 @@ while frames < 60:
 	if (darkness > dark_threshold):
 		dark_tries += 1
 		continue
-
+	print("preprocessed frame, detecting now")
 	# Get all faces from that frame as encodings
 	face_locations = face_detector(gsframe, 1)
 
 	# If we've found at least one, we can continue
 	if face_locations:
+		print("Found Face")
 		break
 
 video_capture.release()
@@ -191,21 +192,26 @@ if not face_locations:
 elif len(face_locations) > 1:
 	print(_("Multiple faces detected, aborting"))
 	sys.exit(1)
-
+print("rectangulating the facial spline")
 face_location = face_locations[0]
 if use_cnn:
 	face_location = face_location.rect
 
 # Get the encodings in the frame
+print("marking the lands")
 face_landmark = pose_predictor(frame, face_location)
+print("coding the ends")
 face_encoding = np.array(face_encoder.compute_face_descriptor(frame, face_landmark, 1))
 
+print("modeling the inserts")
 insert_model["data"].append(face_encoding.tolist())
 
 # Insert full object into the list
+print("insert joke here")
 encodings.append(insert_model)
 
 # Save the new encodings to disk
+print("writing...")
 with open(enc_file, "w") as datafile:
 	json.dump(encodings, datafile)
 
