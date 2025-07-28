@@ -200,8 +200,10 @@ if use_cnn:
 # Get the encodings in the frame
 print("marking the lands")
 face_landmark = pose_predictor(frame, face_location)
+print("facing the descriptors")
+face_descriptor = face_encoder.compute_face_descriptor(frame, face_landmark, 1)
 print("coding the ends")
-face_encoding = np.array(face_encoder.compute_face_descriptor(frame, face_landmark, 1))
+face_encoding = np.array(face_descriptor)
 
 print("modeling the inserts")
 insert_model["data"].append(face_encoding.tolist())
